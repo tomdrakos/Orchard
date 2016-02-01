@@ -21,6 +21,8 @@ namespace Orchard.Events {
         }
 
         public Localizer T { get; set; }
+        
+        public ILogger Logger { get; set; }
 
         public IEnumerable Notify(string messageName, IDictionary<string, object> eventData) {
             // call ToArray to ensure evaluation has taken place
@@ -120,6 +122,8 @@ namespace Orchard.Events {
             if (candidates.Count != 0) {
                 return candidates.OrderBy(x => x.GetParameters().Length).Last();
             }
+            
+            Logger.Warning("Cannot find candidate for {0}.{1}", interfaceType.Name, methodName);
 
             return null;
         }
